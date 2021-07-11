@@ -4,11 +4,11 @@ const https = require("https")
 const Socket = require("websocket").server
 
 
-var file = new (static.Server)('../client');
+var file = new (static.Server)('../public');
 
 const options = {
-    key: fs.readFileSync('../cert/key.pem'),
-    cert: fs.readFileSync('../cert/cert.pem'),
+    key: fs.readFileSync('./cert/key.pem'),
+    cert: fs.readFileSync('./cert/cert.pem'),
 };
 
 const server = https.createServer(options, (req, res) => {
