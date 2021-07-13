@@ -1,0 +1,77 @@
+apt-get -y install coturn
+
+sed -i 's/#TURNSERVER_ENABLED/TURNSERVER_ENABLED/g' /etc/default/coturn
+
+sed -i 's/#fingerprint/fingerprint/g' /etc/turnserver.conf
+sed -i 's/#no-multicast-peers/no-multicast-peers/g' /etc/turnserver.conf
+sed -i 's/#use-auth-secret/use-auth-secret/g' /etc/turnserver.conf
+
+secret=`openssl rand -base64 32`
+sed -i "s|#static-auth-secret=north|static-auth-secret=$secret|g" /etc/turnserver.conf
+
+
+sed -i 's/#realm=realm/realm=turn2.s3tech.in/g' /etc/turnserver.conf
+
+cert=/etc/letsencrypt/live/turn2.s3tech.in/fullchain.pem
+pkey=/etc/letsencrypt/live/turn2.s3tech.in/privkey.pem
+
+external-ip=172.24.102.136
+
+
+service coturn restart
+
+
+https://gabrieltanner.org/blog/turn-server
+https://medium.com/@helderjbe/setting-up-a-turn-server-with-node-production-ready-8f4a4c36e64d
+https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/
+https://zhu45.org/posts/2016/Dec/21/environment-variable-substitution-using-sed/
+https://stackoverflow.com/questions/26110412/is-long-term-credentials-authentication-mechanism-required-for-webrtc-to-wor
+https://stackoverflow.com/questions/51566225/nginx-load-balancing-a-turn-server?answertab=oldest#tab-top
+
+
+https://test.webrtc.org/
+https://webrtc.github.io/test-pages/
+https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/
+
+
+# STANDARD
+
+no-udp
+no-udp-relay
+fingerprint
+
+# PER SERVER CONFIG
+
+external-ip=172.24.102.136
+cert=/etc/letsencrypt/live/turn2.s3tech.in/fullchain.pem
+pkey=/etc/letsencrypt/live/turn2.s3tech.in/privkey.pem
+realm=turn2.s3tech.in
+
+# FOR REST API
+use-auth-secret
+static-auth-secret=
+
+# FOR Long term credentials
+lt-cred-mech
+user=username:password
+
+
+
+
+
+http://turn2.s3tech.in:5400
+https://turn2.s3tech.in:5400
+
+http://turn2.s3tech.in:5401
+https://turn2.s3tech.in:5401
+
+http://turn2.s3tech.in:5402
+https://turn2.s3tech.in:5402
+
+http://turn2.s3tech.in:5403
+https://turn2.s3tech.in:5403
+
+
+
+
+
